@@ -1,8 +1,20 @@
 import { BaseInteraction, Client, Events, MessageFlags } from "discord.js";
 
 export const name = Events.InteractionCreate;
-export const once = true;
+export const once = false;
 export async function execute(interaction: BaseInteraction) {
+  if (interaction.isAutocomplete()) {
+    const command = interaction.client.commands.get(interaction.commandName);
+
+    console.log("autocompleting");
+    try {
+      await command.autocomplete(interaction);
+    } catch (error) {
+      console.error("Autocomplete error:", error);
+    }
+    return; // IMPORTANT
+  }
+
   if (!interaction.isChatInputCommand()) return;
 
   const command = interaction.client.commands.get(interaction.commandName);
@@ -13,13 +25,7 @@ export async function execute(interaction: BaseInteraction) {
   }
 
   try {
-    if (interaction.isAutocomplete()) {
-      console.log("autocompleting");
-
-      await command.autocomplete(interaction);
-      return;
-    }
-    await command.execute();
+    await command.execute(interaction);
   } catch (error) {
     console.error(error);
 
