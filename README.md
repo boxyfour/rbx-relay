@@ -2,11 +2,9 @@
 
 a relay server for roblox
 
-## features
+## Features
 
-* can send global commands to roblox servers; the first server to receive the command will execute it.
-* can send server-specific commands, only the server will run it
-* has basic authentication
+
 
 A basic standalone http server that interacts with a redis database to store actions. If you'd like to connect this with a discord bot, check out my other repository at
 
@@ -39,7 +37,18 @@ Now your http server is up and running! You can configure nginx to act as a reve
 
 If there are any issues you'd like to report, you can create an issue [here](https://github.com/boxyfour/rbx-relay/issues). Before doing that, though, please go through the following common issues you might have.
 
->> I'm running the http server, discord bot, and roblox client set up, but I won't receive messages!!!1!11!
+> I'm running the http server, discord bot, and roblox client set up, but I won't receive messages!!!1!11!
 
-> Theres a few possibilities.
+There's a few possibitlies for this occuring:
 
+### Didn't port forward, or accidentally set the wrong port
+
+If you're running the server at home, anything you host **wont** be exposed to the internet unless you decide to expose it. There are a plethora of reasons why this is, but just know, you'll have to set up port-forwarding on your server to actually connect to the bot. 
+
+Otherwise, if you're hosting this on a VPS, check if your port matches the one you're connecting to.
+
+### Discord bot doesn't have database access
+
+If you're running this on two VPS's or home servers, this is probably what's occuring. The discord bot and http server don't actually communicate; instead, the discord bot receives messages from the database, and the http api acts as a wrapper for the database.
+
+A simple fix for this is to run your discord bot and http server on the same VPS.
