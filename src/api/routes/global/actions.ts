@@ -30,7 +30,7 @@ router.post("/global/:id", requireRoblox, async (request, response) => {
 });
 
 // Returns all unclaimed global actoins
-router.get("/global", requireAny, async (request, response) => {
+router.get("/global/messages", requireAny, async (request, response) => {
   let messages = await data_manager.global_actions();
 
   if (messages && messages.length > 0) {
