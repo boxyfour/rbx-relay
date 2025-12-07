@@ -4,9 +4,7 @@ a relay server for roblox
 
 ## Features
 
-
-
-A basic standalone http server that interacts with a redis database to store actions. If you'd like to connect this with a discord bot, check out my other repository at
+A basic standalone http server that interacts with a redis database to store actions. If you'd like to connect this with a discord bot, check out my [other repository](https://github.com/boxyfour/rbx-bot-relay).
 
 ## prerequisites
 
