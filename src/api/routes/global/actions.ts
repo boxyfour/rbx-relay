@@ -24,8 +24,6 @@ router.post("/global/:id", requireRoblox, async (request, response) => {
 
   let success = await data_manager.claim_global_action(body.id);
 
-  console.log(success);
-
   return response.status(200).json({
     success: success,
   });

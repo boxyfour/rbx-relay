@@ -4,6 +4,8 @@ import { data_manager } from "./store";
 
 const MAXIMUM_TIMEOUT = 100; // seconds
 
+// I don't think there's ever a use case where you want to store old server credentials,
+// but you can always omit this line of code if you really want to keep it.
 data_manager.flushall();
 
 const app = express();
@@ -24,6 +26,8 @@ export function start_server() {
     servers?.forEach((server) => {
       let seconds_since_ping = (Date.now() - server.last_ping) / 1000;
 
+      // Sometimes roblox servers can bug out, so this helps prevent dead servers receiving messages.
+      // Could also act as a memory leak(? shouldnt, since we're working with a database but oh well)
       if (seconds_since_ping > MAXIMUM_TIMEOUT) {
         data_manager.delete_server(server.id);
       }

@@ -1,7 +1,6 @@
 // Long polling & messages
 
 import { Router } from "express";
-import { requireAny } from "../../middleware/auth";
 import { data_manager } from "../../store";
 
 export let router = Router();
@@ -15,7 +14,6 @@ router.get("/messages", async (req, res) => {
 
   let actions = await data_manager.global_actions();
   if (actions.length > 0) {
-    console.log("?");
     return res.json({ data: actions });
   }
 

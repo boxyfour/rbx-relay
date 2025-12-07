@@ -12,13 +12,10 @@
     "deploy": "npm run build && node --env-file=.env out/bot/deploy_commands.js"
   },
   "dependencies": {
-    "@types/better-sqlite3": "^7.6.13",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.5",
     "@types/redis": "^4.0.10",
     "@types/uuid": "^10.0.0",
-    "better-sqlite3": "^12.4.1",
-    "discord.js": "^14.25.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "https": "^1.0.0",
