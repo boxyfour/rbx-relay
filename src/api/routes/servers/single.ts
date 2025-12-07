@@ -1,13 +1,16 @@
 // Single server operations
 
 import { Router } from "express";
-import { requireAny, requireRoblox, requireWrite } from "../../middleware/auth";
+import { requireAny, requireRoblox } from "../../middleware/auth";
 import { server, data_manager } from "../../store";
 
 export let router = Router();
 export let path = "/servers";
 
-// Updates server details
+// TODO:
+// * Servers can patch eachother's data
+// * Could be a security issue? Should be-
+// * -impossible if uuid's aren't leaked though
 router.patch("/:id", requireRoblox, async (request, response) => {
   let id = request.params.id;
   let body: Partial<server> = request.body;

@@ -1,6 +1,6 @@
 # rbx-relay
 
-a relay(?) server for roblox
+a relay server for roblox
 
 ## features
 
@@ -8,20 +8,22 @@ a relay(?) server for roblox
 * can send server-specific commands, only the server will run it
 * has basic authentication
 
+A basic standalone http server that interacts with a redis database to store actions. If you'd like to connect this with a discord bot, check out my other repository at
+
 ## prerequisites
 
-* install nodejs & the typescript compilers
-* have redis installed
+Note that you shouldn't run this on your home computer. Windows systems are annoying to set up Redis on, and if you're sharing access to game with with other collaborators, they're able to view your IP address. Instead, check out solutions like [Oracle Cloud](https://www.oracle.com/cloud/free/), or [Digital Ocean](https://www.digitalocean.com/solutions/.vps-hosting). Then, follow the set-up guide listed later down.
+
+* install [nodejs](https://nodejs.org/en) & the [typescript](https://www.typescriptlang.org/download/) compilers
+* have [redis](https://redis.io/downloads/) installed
+* have [nginx](https://nginx.org/index.html) installed (optional)
 
 ## usage
 
 create an .env file and fill out the following fields:
 
 * SERVER_SECRET (roblox server credentials)
-* REGISTER_SECRET (maybe not in use anymore?)
-* DISCORD_TOKEN (discord bot token)
-* GUILDID (guild-specific id)
-* CLIENTID (application id of the discord bot)
+* REGISTER_SECRET (discord bot credentials)
 
 clone the repository, and run:
 
@@ -29,9 +31,15 @@ clone the repository, and run:
 npm run start
 ```
 
-assuming you've installed the [rblx-client-relay](https://github.com/boxyfour/rbx-client-relay), configure src/bot/commands/polling to your liking and enjoy!
+Now your http server is up and running! You can configure nginx to act as a reverse proxy, meaning you don't have to set up HTTPS manually with this project. If you'd like to do this, check out [this guide](https://nginx.org/en/docs/http/configuring_https_servers.html).
 
-# todo
+## Important
 
-* add command failures(?) (might not be possible, if a command succeeds but the server fails to send the request, could occur multiple times)
-* finish discord bot
+### Issues
+
+If there are any issues you'd like to report, you can create an issue [here](https://github.com/boxyfour/rbx-relay/issues). Before doing that, though, please go through the following common issues you might have.
+
+>> I'm running the http server, discord bot, and roblox client set up, but I won't receive messages!!!1!11!
+
+> Theres a few possibilities.
+

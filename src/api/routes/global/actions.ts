@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { requireAny, requireRoblox, requireWrite } from "../../middleware/auth";
-import { data_manager } from "../../store";
+import { requireAny, requireRoblox } from "../../middleware/auth";
+import { data_manager, message_bus } from "../../store";
 
 export let router = Router();
 export let path = "/servers";
 
-// Claims logs
+// Claims a global action
 router.post("/global/:id", requireRoblox, async (request, response) => {
   const id = request.params.id;
   let body = request.body;
@@ -29,10 +29,28 @@ router.post("/global/:id", requireRoblox, async (request, response) => {
   });
 });
 
-router.get("/global", async (request, response) => {
-  console.log("got request");
+// Returns all unclaimed global actoins
+router.get("/global", requireAny, async (request, response) => {
+  let messages = await data_manager.global_actions();
 
-  return response.status(200).json({
-    data: await data_manager.global_actions(),
-  });
+  if (messages && messages.length > 0) {
+    return response.status(200).json({
+      data: messages,
+    });
+  }
+
+  // no messages for now
+  const timeout = setTimeout(() => {
+    message_bus.removeListener(`global`, onMessage);
+    response.json([]);
+  }, 30000);
+
+  // SOOO much cleaner than whatever the hell polling i was using
+  const onMessage = async () => {
+    clearTimeout(timeout);
+    let actions = await data_manager.global_actions();
+    response.status(200).json(actions || []);
+  };
+
+  message_bus.once("global", onMessage);
 });

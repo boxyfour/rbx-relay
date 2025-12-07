@@ -1,7 +1,7 @@
 // Returns all actions, all erv
 
 import { Router } from "express";
-import { requireRoblox } from "../../middleware/auth";
+import { requireRoblox, requireWrite } from "../../middleware/auth";
 import { data_manager, server } from "../../store";
 import { v6 } from "uuid";
 
@@ -10,8 +10,7 @@ let base_id: number = 0;
 export let router = Router();
 export let path = "/servers";
 
-// Gets servers
-router.get("/", async (request, response) => {
+router.get("/", requireWrite, async (request, response) => {
   response.json(await data_manager.servers());
 });
 

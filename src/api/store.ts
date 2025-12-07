@@ -1,8 +1,13 @@
 import { createClient, RedisClientType } from "redis";
 import { v6 } from "uuid";
+import { EventEmitter } from "node:events";
 
+// ? Redis returns an integer instead of a boolean to
+// ? indicate an actions success. This just helps
+// ? maintain readability
 const SUCCESS = 1;
-const FAILURE = 0;
+
+export let message_bus = new EventEmitter();
 
 export type server = {
   player_count: number;
@@ -11,8 +16,6 @@ export type server = {
   id: string;
   last_ping: number;
 };
-
-type ban_unit = "days" | "seconds" | "weeks" | "years" | "hours";
 
 export type action = {
   topic: string;
@@ -134,10 +137,15 @@ class DataManager {
   }
 
   async add_action(server_id: string, action: action) {
-    return (
+    let success =
       (await this.client.SADD(`server:${server_id}`, JSON.stringify(action))) ==
-      SUCCESS
-    );
+      SUCCESS;
+
+    if (success) {
+      message_bus.emit(`server:${server_id}`, action);
+    }
+
+    return success;
   }
 
   async add_global_action(action: Partial<action>) {
@@ -145,6 +153,9 @@ class DataManager {
     action.taken = false;
     await this.client.SADD("global", action.id);
     await this.client.SET(`global:${action.id}`, JSON.stringify(action));
+
+    // I might've forgotten to add long-polling for global messages.. smh
+    message_bus.emit(`global`, action);
   }
 
   async claim_global_action(action_id: string): Promise<boolean> {

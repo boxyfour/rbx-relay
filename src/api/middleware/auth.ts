@@ -30,7 +30,5 @@ export function requireAny(req: Request, res: Response, next: NextFunction) {
     return next();
   }
 
-  console.log("failed");
-
   return res.status(403).json();
 }
