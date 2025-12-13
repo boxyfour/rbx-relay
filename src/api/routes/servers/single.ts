@@ -2,7 +2,9 @@
 
 import { Router } from "express";
 import { requireAny, requireRoblox } from "../../middleware/auth";
-import { server, data_manager } from "../../store";
+import { data_manager } from "../../../database/DataManager";
+import { server } from "../../../database/ServerManager";
+
 
 export let router = Router();
 export let path = "/servers";
@@ -22,7 +24,7 @@ router.patch("/:id", requireRoblox, async (request, response) => {
     return;
   }
 
-  let cached_data = await data_manager.server(id);
+  let cached_data = await data_manager.server_manager.get(id);
 
   if (!cached_data) {
     response.status(400).json({
@@ -37,7 +39,7 @@ router.patch("/:id", requireRoblox, async (request, response) => {
     ...body,
   };
 
-  data_manager.update_server(updated);
+  data_manager.server_manager.update(updated);
 
   response.status(200).json(updated);
 });
@@ -46,13 +48,13 @@ router.patch("/:id", requireRoblox, async (request, response) => {
 router.delete("/:id", requireAny, async (request, response) => {
   let id = request.params.id;
 
-  if (!(await data_manager.server(id))) {
+  if (!(await data_manager.server_manager.get(id))) {
     response.status(400).json({
       message: `server with id ${id} does not exist`,
     });
     return;
   }
 
-  data_manager.delete_server(id);
+  data_manager.server_manager.delete(id);
   response.sendStatus(200);
 });

@@ -33,7 +33,7 @@ Now your http server is up and running! You can configure nginx to act as a reve
 
 ### Issues
 
-If there are any issues you'd like to report, you can create an issue [here](https://github.com/boxyfour/rbx-relay/issues). Before doing that, though, please go through the following common issues you might have.
+If there are any issues you'd like to report, you can create [an issue here](https://github.com/boxyfour/rbx-relay/issues). Before doing that, though, please go through the following common issues you might have.
 
 > I'm running the http server, discord bot, and roblox client set up, but I won't receive messages!!!1!11!
 
@@ -41,7 +41,7 @@ There's a few possibitlies for this occuring:
 
 ### Didn't port forward, or accidentally set the wrong port
 
-If you're running the server at home, anything you host **wont** be exposed to the internet unless you decide to expose it. There are a plethora of reasons why this is, but just know, you'll have to set up port-forwarding on your server to actually connect to the bot. 
+If you're running the server at home, anything you host **wont** be exposed to the internet unless you decide to expose it. There are a plethora of reasons why this is, but just know, you'll have to set up port-forwarding on your server to actually connect to the bot.
 
 Otherwise, if you're hosting this on a VPS, check if your port matches the one you're connecting to.
 

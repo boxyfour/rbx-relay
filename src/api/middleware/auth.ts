@@ -1,12 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-
-const RBLX_SECRET = process.env.SERVER_SECRET;
-const ACTION_SECRET = process.env.REGISTER_SECRET;
+import { WRITE_SECRET, RBLX_SERVER_SECRET } from "../../constants/Secrets";
 
 export function requireRoblox(req: Request, res: Response, next: NextFunction) {
   const auth = req.headers.authentication;
 
-  if (auth === RBLX_SECRET || auth === ACTION_SECRET) {
+  if (auth === RBLX_SERVER_SECRET || auth === WRITE_SECRET) {
     return next();
   }
 
@@ -16,7 +14,7 @@ export function requireRoblox(req: Request, res: Response, next: NextFunction) {
 export function requireWrite(req: Request, res: Response, next: NextFunction) {
   const auth = req.headers.authentication;
 
-  if (auth === ACTION_SECRET) {
+  if (auth === WRITE_SECRET) {
     return next();
   }
 
@@ -26,7 +24,7 @@ export function requireWrite(req: Request, res: Response, next: NextFunction) {
 export function requireAny(req: Request, res: Response, next: NextFunction) {
   const auth = req.headers.authentication;
 
-  if (auth === ACTION_SECRET || auth === RBLX_SECRET) {
+  if (auth === WRITE_SECRET || auth === RBLX_SERVER_SECRET) {
     return next();
   }
 

@@ -2,16 +2,15 @@
 
 import { Router } from "express";
 import { requireRoblox, requireWrite } from "../../middleware/auth";
-import { data_manager, server } from "../../store";
 import { v6 } from "uuid";
-
-let base_id: number = 0;
+import { data_manager } from "../../../database/DataManager";
+import { server } from "../../../database/ServerManager";
 
 export let router = Router();
 export let path = "/servers";
 
 router.get("/", requireWrite, async (request, response) => {
-  response.json(await data_manager.servers());
+  response.json(await data_manager.server_manager.all());
 });
 
 // Creates server
@@ -30,7 +29,7 @@ router.post("/", requireRoblox, (request, response) => {
   }
 
   body.last_ping = Date.now();
-  data_manager.add_server(body);
+  data_manager.server_manager.add(body);
 
   console.log(`registered id: ${body.id}`);
 
